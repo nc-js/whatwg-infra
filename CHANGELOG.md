@@ -1,15 +1,4 @@
 # Changelog
 
-## Unreleased (YYYY-MM-DD)
-
-No release notes yet.
-
-## 1.0.0 (2024-01-03)
-
-### Features
-
-- Implement `collectCodepoints()` [(#20)](https://github.com/neoncitylights/ts-whatwg-infra/pull/20)
-
-## 0.0.0 (2022-25-11)
-
-- First release
+## 1.0.0 (2025-05-02)
+- Initial release of package on JSR. This was initially released on npmjs.com as `@neoncitylights/whatwg-infra`, and was moved to jsr.io as `@nc/whatwg-infra`.
