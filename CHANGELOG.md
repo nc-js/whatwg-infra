@@ -1,15 +1,15 @@
 # Changelog
 
-## Unreleased (YYYY-MM-DD)
+## 1.0.0 (2025-05-02)
+Initial release of package on JSR. Note that this was initially released on npmjs.com as `@neoncitylights/whatwg-infra`, and was moved to jsr.io as `@nc/whatwg-infra`.
 
-No release notes yet.
+The following changes below have been made to this package that were not originally in `@neoncitylights/whatwg-infra`:
 
-## 1.0.0 (2024-01-03)
+### Breaking changes
+- `isAsciiByte()` was renamed to `isAscii()`
 
 ### Features
-
-- Implement `collectCodepoints()` [(#20)](https://github.com/neoncitylights/ts-whatwg-infra/pull/20)
-
-## 0.0.0 (2022-25-11)
-
-- First release
+- new `stringMatches()` function
+- new `isStringIsomorphic()` function
+- new `isStringAscii()` function
+- new `isStringScalarValue()` function
