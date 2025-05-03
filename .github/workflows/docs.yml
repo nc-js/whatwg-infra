@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  ENTRYPOINT: ./src/mod.ts
+  ENTRYPOINT: ./src/
 
 jobs:
   # Build job

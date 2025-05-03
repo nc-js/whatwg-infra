@@ -19,7 +19,7 @@
 	},
 	"fmt": {
 		"include": [
-			"src/",
+			"src/"
 		],
 		"useTabs": true,
 		"semiColons": false,
