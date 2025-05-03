@@ -1,3 +1,8 @@
+/**
+ * Implementation of string algorithms
+ * @module
+ */
+
 import { isAsciiWhitespace, isSurrogate } from './codePoints.ts'
 
 /**
@@ -103,7 +108,7 @@ export const normalizeNewlines = (value: string): string => {
  * @see https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace
  * @see https://tc39.es/ecma262/multipage/text-processing.html#sec-string.prototype.trim
  */
-export const stripTrailingLeadingAsciiWhitespace = (value: string): string => {
+export const stripAsciiWsp = (value: string): string => {
 	let leadingIndex = 0
 	while (isAsciiWhitespace(value[leadingIndex] as string)) {
 		leadingIndex++
@@ -124,7 +129,7 @@ export const stripTrailingLeadingAsciiWhitespace = (value: string): string => {
  *
  * @see https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace
  */
-export const stripCollapseAsciiWhitespace = (value: string): string => {
+export const stripCollapseAsciiWsp = (value: string): string => {
 	let result = ''
 	let lastSeenWhitespace = false
 
@@ -142,5 +147,5 @@ export const stripCollapseAsciiWhitespace = (value: string): string => {
 		}
 	}
 
-	return stripTrailingLeadingAsciiWhitespace(result)
+	return stripAsciiWsp(result)
 }

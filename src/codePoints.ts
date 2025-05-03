@@ -1,4 +1,9 @@
 /**
+ * Implementation of Unicode codepoint algorithms
+ * @module
+ */
+
+/**
  * Predicate function to validate if a Unicode code point
  * exists inclusively between a range of code points.
  */

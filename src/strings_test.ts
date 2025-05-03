@@ -3,9 +3,9 @@ import {
 	collectCodepoints,
 	convertStringToScalarValue,
 	normalizeNewlines,
-	stripCollapseAsciiWhitespace,
+	stripAsciiWsp,
+	stripCollapseAsciiWsp,
 	stripNewlines,
-	stripTrailingLeadingAsciiWhitespace,
 } from './strings.ts'
 import { isAsciiAlpha } from './codePoints.ts'
 
@@ -84,7 +84,7 @@ Deno.test('normalize newlines', () => {
 })
 
 Deno.test('strip trailing and leading ASCII whitespace', () => {
-	assertEquals(stripTrailingLeadingAsciiWhitespace(''), '')
+	assertEquals(stripAsciiWsp(''), '')
 })
 
 Deno.test('strip and collapse ASCII whitespace', () => {
@@ -97,6 +97,6 @@ Deno.test('strip and collapse ASCII whitespace', () => {
 	]
 	for (const testValue of values) {
 		const [value, expected] = testValue
-		assertEquals(stripCollapseAsciiWhitespace(value), expected)
+		assertEquals(stripCollapseAsciiWsp(value), expected)
 	}
 })
