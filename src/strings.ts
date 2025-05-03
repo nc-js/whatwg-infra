@@ -7,6 +7,7 @@ import {
 	isAscii,
 	isAsciiWhitespace,
 	isCodePointBetween,
+	isScalarValue,
 	isSurrogate,
 } from './codePoints.ts'
 
@@ -50,7 +51,7 @@ export const isStringIsomorphic = (s: string): boolean =>
  * @see https://infra.spec.whatwg.org/#scalar-value-string
  */
 export const isStringScalarValue = (s: string): boolean =>
-	stringMatches(s, (codepoint) => !isSurrogate(codepoint))
+	stringMatches(s, (codepoint) => isScalarValue(codepoint))
 
 /**
  * Collects a sequence of codepoints that passes a given predicate function,
