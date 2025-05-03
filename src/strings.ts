@@ -1,4 +1,4 @@
-import { isAsciiWhitespace, isSurrogate } from './codePoints';
+import { isAsciiWhitespace, isSurrogate } from './codePoints.ts'
 
 /**
  * Collects a sequence of codepoints that passes a given predicate function,
@@ -7,28 +7,28 @@ import { isAsciiWhitespace, isSurrogate } from './codePoints';
  * @see https://infra.spec.whatwg.org/#collect-a-sequence-of-code-points
  * @returns A 2-tuple of the new string and the new position
  */
-export function collectCodepoints(
+export const collectCodepoints = (
 	value: string,
 	position: number,
 	predicate: (codePoint: string) => boolean,
-): [string, number] {
-	if(position >= value.length || value === '') {
-		return ['', position];
+): [string, number] => {
+	if (position >= value.length || value === '') {
+		return ['', position]
 	}
 
-	let newPosition = position;
-	let result = '';
+	let newPosition = position
+	let result = ''
 
-	for(const codePoint of value.slice(position)) {
-		if(predicate(codePoint)) {
-			result += codePoint;
-			newPosition++;
+	for (const codePoint of value.slice(position)) {
+		if (predicate(codePoint)) {
+			result += codePoint
+			newPosition++
 		} else {
-			break;
+			break
 		}
 	}
 
-	return [result, newPosition];
+	return [result, newPosition]
 }
 
 /**
@@ -39,17 +39,17 @@ export function collectCodepoints(
  * @see https://infra.spec.whatwg.org/#javascript-string-convert
  */
 export const convertStringToScalarValue = (value: string): string => {
-	let scalarValueString = '';
-	for(const codePoint of value) {
-		if(isSurrogate(codePoint)) {
-			scalarValueString += '\u{FFFD}';
+	let scalarValueString = ''
+	for (const codePoint of value) {
+		if (isSurrogate(codePoint)) {
+			scalarValueString += '\u{FFFD}'
 		} else {
-			scalarValueString += codePoint;
+			scalarValueString += codePoint
 		}
 	}
 
-	return scalarValueString;
-};
+	return scalarValueString
+}
 
 /**
  * A string without any codepoints equal to either `U+000A`
@@ -57,15 +57,15 @@ export const convertStringToScalarValue = (value: string): string => {
  * @see https://infra.spec.whatwg.org/#strip-newlines
  */
 export const stripNewlines = (value: string): string => {
-	let stripped = '';
-	for(const codePoint of value) {
-		if(codePoint !== '\u{000A}' && codePoint !== '\u{000D}') {
-			stripped += codePoint;
+	let stripped = ''
+	for (const codePoint of value) {
+		if (codePoint !== '\u{000A}' && codePoint !== '\u{000D}') {
+			stripped += codePoint
 		}
 	}
 
-	return stripped;
-};
+	return stripped
+}
 
 /**
  * Replaces consecutive codepoints/pairs of `U+000D` and `U+000A`
@@ -75,23 +75,23 @@ export const stripNewlines = (value: string): string => {
  * @see https://infra.spec.whatwg.org/#normalize-newlines
  */
 export const normalizeNewlines = (value: string): string => {
-	let normalized = '';
-	for(let i = 0; i < value.length; i++) {
-		if(value[i] === '\u{000D}' && value[i+1] === '\u{000A}') {
-			normalized += '\u{000A}';
-			i++;
-			continue;
+	let normalized = ''
+	for (let i = 0; i < value.length; i++) {
+		if (value[i] === '\u{000D}' && value[i + 1] === '\u{000A}') {
+			normalized += '\u{000A}'
+			i++
+			continue
 		}
-		normalized += value[i];
+		normalized += value[i]
 	}
 
-	return normalized.replace('\u{000D}', '\u{000A}');
-};
+	return normalized.replace('\u{000D}', '\u{000A}')
+}
 
 /**
  * An implementation of the WHATWG "strip trailing and leading ascii whitespace" algorithm.
  * This is a slightly different, less strict version of `String.prototype.trim()`.
- * 
+ *
  * Both remove: `U+0009` TAB, `U+000C` FF, and `U+0020` SPACE.
  *
  * Notable differences:
@@ -104,18 +104,18 @@ export const normalizeNewlines = (value: string): string => {
  * @see https://tc39.es/ecma262/multipage/text-processing.html#sec-string.prototype.trim
  */
 export const stripTrailingLeadingAsciiWhitespace = (value: string): string => {
-	let leadingIndex = 0;
-	while(isAsciiWhitespace(value[leadingIndex] as string)) {
-		leadingIndex++;
+	let leadingIndex = 0
+	while (isAsciiWhitespace(value[leadingIndex] as string)) {
+		leadingIndex++
 	}
 
-	let trailingIndex = value.length;
-	while(isAsciiWhitespace(value[trailingIndex - 1] as string)) {
-		trailingIndex--;
+	let trailingIndex = value.length
+	while (isAsciiWhitespace(value[trailingIndex - 1] as string)) {
+		trailingIndex--
 	}
 
-	return value.substring(leadingIndex, trailingIndex);
-};
+	return value.substring(leadingIndex, trailingIndex)
+}
 
 /**
  * Algorithm to collapse/reduce consecutive ASCII whitespace codepoints
@@ -125,22 +125,22 @@ export const stripTrailingLeadingAsciiWhitespace = (value: string): string => {
  * @see https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace
  */
 export const stripCollapseAsciiWhitespace = (value: string): string => {
-	let result = '';
-	let lastSeenWhitespace = false;
+	let result = ''
+	let lastSeenWhitespace = false
 
-	for(let i = 0; i < value.length; i++) {
-		const codepoint = value[i] as string;
-		if(isAsciiWhitespace(codepoint)) {
-			if(!lastSeenWhitespace) {
-				lastSeenWhitespace = true;
-				result += '\u{0020}';
-				continue;
+	for (let i = 0; i < value.length; i++) {
+		const codepoint = value[i] as string
+		if (isAsciiWhitespace(codepoint)) {
+			if (!lastSeenWhitespace) {
+				lastSeenWhitespace = true
+				result += '\u{0020}'
+				continue
 			}
 		} else {
-			lastSeenWhitespace = false;
-			result += codepoint;
+			lastSeenWhitespace = false
+			result += codepoint
 		}
 	}
 
-	return stripTrailingLeadingAsciiWhitespace(result);
-};
+	return stripTrailingLeadingAsciiWhitespace(result)
+}

@@ -1,0 +1,54 @@
+name: Deno CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  ENTRYPOINT: ./src/mod.ts
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+            deno-version: v2.x
+      - name: Check types
+        run: deno check $ENTRYPOINT
+      - name: Run tests
+        run: deno test -A
+
+  codequality:
+    name: codequality (${{ matrix.job-name }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - job-name: fmt
+            job-step: formatting
+            cmd: deno fmt --check
+          - job-name: lint
+            job-step: linting
+            cmd: deno lint
+          - job-name: doc
+            job-step: documentation
+            cmd: deno doc --lint $ENTRYPOINT
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+            deno-version: v2.x
+      - name: Check ${{ matrix.job-check }}
+        run: ${{ matrix.cmd }}

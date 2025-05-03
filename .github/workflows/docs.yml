@@ -1,4 +1,4 @@
-name: Deploy TypeDoc site to Pages
+name: Deploy API Docs to GitHub Pages
 
 on:
   push:
@@ -17,28 +17,30 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  ENTRYPOINT: ./src/mod.ts
+
 jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
         with:
-          node-version: latest
-          cache: 'npm'
+          deno-version: v2.x
       - name: Install dependencies
-        run: npm ci
+        run: deno i
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
       - name: Build documentation
-        run: npm run docs
+        run: deno doc --html $ENTRYPOINT
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./docs/typedoc
+          path: ./docs
 
   # Deployment job
   deploy:
