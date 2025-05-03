@@ -24,8 +24,7 @@ export const isCodePointBetween = (
  *
  * @see https://infra.spec.whatwg.org/#ascii-byte
  */
-export const isAsciiByte = (v: string): boolean =>
-	isCodePointBetween(v, 0x00, 0x7F)
+export const isAscii = (v: string): boolean => isCodePointBetween(v, 0x00, 0x7F)
 
 /**
  * A code point inclusively between the range of:

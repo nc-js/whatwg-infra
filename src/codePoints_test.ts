@@ -1,8 +1,8 @@
 import { assert, assertEquals } from '@std/assert'
 import {
+	isAscii,
 	isAsciiAlpha,
 	isAsciiAlphanumeric,
-	isAsciiByte,
 	isAsciiDigit,
 	isAsciiHexDigit,
 	isAsciiLowerAlpha,
@@ -32,7 +32,7 @@ Deno.test('is codepoint %s in between %i and %i', () => {
 	}
 })
 
-Deno.test('is ASCII byte', () => {
+Deno.test('is ASCII', () => {
 	const values: [string, boolean][] = [
 		['\u{0000}', true],
 		['\u{003F}', true],
@@ -42,7 +42,7 @@ Deno.test('is ASCII byte', () => {
 
 	for (const value of values) {
 		const [codePoint, expected] = value
-		assertEquals(isAsciiByte(codePoint), expected)
+		assertEquals(isAscii(codePoint), expected)
 	}
 })
 

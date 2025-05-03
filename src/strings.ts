@@ -3,7 +3,54 @@
  * @module
  */
 
-import { isAsciiWhitespace, isSurrogate } from './codePoints.ts'
+import {
+	isAscii,
+	isAsciiWhitespace,
+	isCodePointBetween,
+	isSurrogate,
+} from './codePoints.ts'
+
+/**
+ * Checks if all codepoints of a string matches a given predicate.
+ */
+export const stringMatches = (
+	s: string,
+	predicate: (cp: string) => boolean,
+): boolean => {
+	for (const codepoint of s) {
+		if (!predicate(codepoint)) {
+			return false
+		}
+	}
+	return true
+}
+
+/**
+ * Checks if a string is an ASCII string, where every codepoint
+ * must be an ASCII codepoint.
+ *
+ * @see https://infra.spec.whatwg.org/#ascii-string
+ */
+export const isStringAscii = (s: string): boolean =>
+	stringMatches(s, (codepoint) => isAscii(codepoint))
+
+/**
+ * Checks if a string is isomorphic, where every codepoint
+ * must be between the range of U+0000 NULL to 0+00FF (ÿ), inclusive.
+ *
+ * @see https://infra.spec.whatwg.org/#isomorphic-string
+ */
+export const isStringIsomorphic = (s: string): boolean =>
+	stringMatches(s, (codepoint) => isCodePointBetween(codepoint, 0x00, 0x00FF))
+
+/**
+ * Checks if a string is a scalar value string, where every codepoint
+ * must be a scalar value (not a surrogate).
+ *
+ * @see https://infra.spec.whatwg.org/#scalar-value-string
+ */
+export const isStringScalarValue = (s: string): boolean =>
+	stringMatches(s, (codepoint) => !isSurrogate(codepoint))
 
 /**
  * Collects a sequence of codepoints that passes a given predicate function,
@@ -13,18 +60,18 @@ import { isAsciiWhitespace, isSurrogate } from './codePoints.ts'
  * @returns A 2-tuple of the new string and the new position
  */
 export const collectCodepoints = (
-	value: string,
+	s: string,
 	position: number,
 	predicate: (codePoint: string) => boolean,
 ): [string, number] => {
-	if (position >= value.length || value === '') {
+	if (position >= s.length || s === '') {
 		return ['', position]
 	}
 
 	let newPosition = position
 	let result = ''
 
-	for (const codePoint of value.slice(position)) {
+	for (const codePoint of s.slice(position)) {
 		if (predicate(codePoint)) {
 			result += codePoint
 			newPosition++
@@ -43,14 +90,10 @@ export const collectCodepoints = (
  * @see https://infra.spec.whatwg.org/#scalar-value-string
  * @see https://infra.spec.whatwg.org/#javascript-string-convert
  */
-export const convertStringToScalarValue = (value: string): string => {
+export const convertStringToScalarValue = (s: string): string => {
 	let scalarValueString = ''
-	for (const codePoint of value) {
-		if (isSurrogate(codePoint)) {
-			scalarValueString += '\u{FFFD}'
-		} else {
-			scalarValueString += codePoint
-		}
+	for (const codePoint of s) {
+		scalarValueString += isSurrogate(codePoint) ? '\u{FFFD}' : codePoint
 	}
 
 	return scalarValueString
@@ -59,11 +102,12 @@ export const convertStringToScalarValue = (value: string): string => {
 /**
  * A string without any codepoints equal to either `U+000A`
  * or `U+000D`.
+ *
  * @see https://infra.spec.whatwg.org/#strip-newlines
  */
-export const stripNewlines = (value: string): string => {
+export const stripNewlines = (s: string): string => {
 	let stripped = ''
-	for (const codePoint of value) {
+	for (const codePoint of s) {
 		if (codePoint !== '\u{000A}' && codePoint !== '\u{000D}') {
 			stripped += codePoint
 		}
@@ -79,15 +123,15 @@ export const stripNewlines = (value: string): string => {
  *
  * @see https://infra.spec.whatwg.org/#normalize-newlines
  */
-export const normalizeNewlines = (value: string): string => {
+export const normalizeNewlines = (s: string): string => {
 	let normalized = ''
-	for (let i = 0; i < value.length; i++) {
-		if (value[i] === '\u{000D}' && value[i + 1] === '\u{000A}') {
+	for (let i = 0; i < s.length; i++) {
+		if (s[i] === '\u{000D}' && s[i + 1] === '\u{000A}') {
 			normalized += '\u{000A}'
 			i++
 			continue
 		}
-		normalized += value[i]
+		normalized += s[i]
 	}
 
 	return normalized.replace('\u{000D}', '\u{000A}')
@@ -108,18 +152,18 @@ export const normalizeNewlines = (value: string): string => {
  * @see https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace
  * @see https://tc39.es/ecma262/multipage/text-processing.html#sec-string.prototype.trim
  */
-export const stripAsciiWsp = (value: string): string => {
+export const stripAsciiWsp = (s: string): string => {
 	let leadingIndex = 0
-	while (isAsciiWhitespace(value[leadingIndex] as string)) {
+	while (isAsciiWhitespace(s[leadingIndex] as string)) {
 		leadingIndex++
 	}
 
-	let trailingIndex = value.length
-	while (isAsciiWhitespace(value[trailingIndex - 1] as string)) {
+	let trailingIndex = s.length
+	while (isAsciiWhitespace(s[trailingIndex - 1] as string)) {
 		trailingIndex--
 	}
 
-	return value.substring(leadingIndex, trailingIndex)
+	return s.substring(leadingIndex, trailingIndex)
 }
 
 /**
@@ -129,12 +173,12 @@ export const stripAsciiWsp = (value: string): string => {
  *
  * @see https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace
  */
-export const stripCollapseAsciiWsp = (value: string): string => {
+export const stripCollapseAsciiWsp = (s: string): string => {
 	let result = ''
 	let lastSeenWhitespace = false
 
-	for (let i = 0; i < value.length; i++) {
-		const codepoint = value[i] as string
+	for (let i = 0; i < s.length; i++) {
+		const codepoint = s[i] as string
 		if (isAsciiWhitespace(codepoint)) {
 			if (!lastSeenWhitespace) {
 				lastSeenWhitespace = true

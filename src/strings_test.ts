@@ -1,13 +1,51 @@
-import { assertEquals } from '@std/assert'
+import { assert, assertEquals, assertFalse } from '@std/assert'
 import {
 	collectCodepoints,
 	convertStringToScalarValue,
+	isStringAscii,
+	isStringIsomorphic,
+	isStringScalarValue,
 	normalizeNewlines,
+	stringMatches,
 	stripAsciiWsp,
 	stripCollapseAsciiWsp,
 	stripNewlines,
 } from './strings.ts'
 import { isAsciiAlpha } from './codePoints.ts'
+
+Deno.test('string matches a predicate', () => {
+	assert(stringMatches('bbbb', (codepoint) => codepoint === 'b'))
+})
+
+Deno.test('string fails to match a predicate', () => {
+	assertFalse(stringMatches('bbba', (codepoint) => codepoint === 'b'))
+})
+
+Deno.test('string is ASCII', () => {
+	assert(isStringAscii(''))
+	assert(isStringAscii('foo'))
+	assert(isStringAscii('bar'))
+	assert(isStringAscii('\u{0000}\u{007F}'))
+})
+
+Deno.test('string is isomorphic', () => {
+	assert(isStringIsomorphic(''))
+	assert(isStringIsomorphic('\u{0000}\u{00FF}'))
+	assertFalse(isStringIsomorphic('\u{0000}\u{0100}'))
+})
+
+Deno.test('string is scalar value', () => {
+	assert(isStringScalarValue(''))
+	assert(isStringScalarValue('\u{0000}\u{007F}'))
+	assert(isStringScalarValue('\u{0000}\u{00FF}'))
+	assert(isStringScalarValue('\u{0000}\u{D7FF}'))
+	assert(isStringScalarValue('\u{0000}\u{E000}'))
+
+	assertFalse(isStringScalarValue('\u{D800}'))
+	assertFalse(isStringScalarValue('\u{DBFF}'))
+	assertFalse(isStringScalarValue('\u{DC00}'))
+	assertFalse(isStringScalarValue('\u{DFFF}'))
+})
 
 Deno.test('collect a sequence of codepoints', () => {
 	const values: [
