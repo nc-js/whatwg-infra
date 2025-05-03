@@ -4,7 +4,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/nc-js/whatwg-infra?style=flat-square&logo=codecov&logoColor=%23fff)](https://codecov.io/gh/nc-js/whatwg-infra)
 [![CI status](https://img.shields.io/github/actions/workflow/status/nc-js/whatwg-infra/.github%2Fworkflows%2Fdeno-ci.yml?style=flat-square)](https://github.com/nc-js/whatwg-infra/actions/workflows/deno-ci.yml)
 
-A small TypeScript package implementing various Unicode-related algorithms from the **WHATWG Infra Standard**[^whatwg-infra]. This currently includes:
+A small TypeScript package implementing various Unicode-related algorithms from the [**WHATWG Infra Standard**](https://infra.spec.whatwg.org/). This currently includes:
  - [§ 4.5 Code points](https://infra.spec.whatwg.org/#code-points)
  - [§ 4.6 Strings](https://infra.spec.whatwg.org/#strings)
 
@@ -15,5 +15,3 @@ This library is licensed under the MIT license ([`LICENSE`](./LICENSE) or http:/
 ### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the MIT license, shall be licensed as above, without any additional terms or conditions.
-
-[^whatwg-infra]: WHATWG Working Group. (2022, November 23). Infra Standard. Retrieved November 25, 2022, from https://infra.spec.whatwg.org/
