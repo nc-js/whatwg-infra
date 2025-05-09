@@ -7,7 +7,7 @@
 A small TypeScript package implementing various algorithms from the [**WHATWG Infra Standard**](https://infra.spec.whatwg.org/). This currently includes:
  - [§ 4.5 Code points](https://infra.spec.whatwg.org/#code-points)
  - [§ 4.6 Strings](https://infra.spec.whatwg.org/#strings)
- - [§ Namespaces](https://infra.spec.whatwg.org/#namespaces)
+ - [§ 8 Namespaces](https://infra.spec.whatwg.org/#namespaces)
 
 ## License
 
