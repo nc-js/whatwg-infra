@@ -1,4 +1,9 @@
 /**
+ * Constants of XML namespaces
+ * @module
+ */
+
+/**
  * The XML namespace for HTML
  * @see {@link https://infra.spec.whatwg.org/#html-namespace}
  */
