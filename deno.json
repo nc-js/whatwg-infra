@@ -11,7 +11,8 @@
 	},
 	"exports": {
 		"./codePoints": "./src/codePoints.ts",
-		"./strings": "./src/strings.ts"
+		"./strings": "./src/strings.ts",
+		"./namespaces": "./src/namespaces.ts"
 	},
 	"fmt": {
 		"include": [
