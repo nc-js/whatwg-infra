@@ -5,7 +5,7 @@
 
 import {
 	isAscii,
-	isAsciiWhitespace,
+	isAsciiWsp,
 	isCodePointBetween,
 	isScalarValue,
 	isSurrogate,
@@ -30,7 +30,7 @@ export const stringMatches = (
  * Checks if a string is an ASCII string, where every codepoint
  * must be an ASCII codepoint.
  *
- * @see https://infra.spec.whatwg.org/#ascii-string
+ * @see {@link https://infra.spec.whatwg.org/#ascii-string}
  */
 export const isStringAscii = (s: string): boolean =>
 	stringMatches(s, (codepoint) => isAscii(codepoint))
@@ -39,7 +39,7 @@ export const isStringAscii = (s: string): boolean =>
  * Checks if a string is isomorphic, where every codepoint
  * must be between the range of U+0000 NULL to 0+00FF (ÿ), inclusive.
  *
- * @see https://infra.spec.whatwg.org/#isomorphic-string
+ * @see {@link https://infra.spec.whatwg.org/#isomorphic-string}
  */
 export const isStringIsomorphic = (s: string): boolean =>
 	stringMatches(s, (codepoint) => isCodePointBetween(codepoint, 0x00, 0x00FF))
@@ -48,7 +48,7 @@ export const isStringIsomorphic = (s: string): boolean =>
  * Checks if a string is a scalar value string, where every codepoint
  * must be a scalar value (not a surrogate).
  *
- * @see https://infra.spec.whatwg.org/#scalar-value-string
+ * @see {@link https://infra.spec.whatwg.org/#scalar-value-string}
  */
 export const isStringScalarValue = (s: string): boolean =>
 	stringMatches(s, (codepoint) => isScalarValue(codepoint))
@@ -57,7 +57,7 @@ export const isStringScalarValue = (s: string): boolean =>
  * Collects a sequence of codepoints that passes a given predicate function,
  * starting at a given position.
  *
- * @see https://infra.spec.whatwg.org/#collect-a-sequence-of-code-points
+ * @see {@link https://infra.spec.whatwg.org/#collect-a-sequence-of-code-points}
  * @returns A 2-tuple of the new string and the new position
  */
 export const collectCodepoints = (
@@ -87,9 +87,9 @@ export const collectCodepoints = (
 /**
  * A string with only Unicode scalar values (non-surrogate codepoints).
  *
- * @see https://unicode.org/glossary/#unicode_scalar_value
- * @see https://infra.spec.whatwg.org/#scalar-value-string
- * @see https://infra.spec.whatwg.org/#javascript-string-convert
+ * @see {@link https://unicode.org/glossary/#unicode_scalar_value}
+ * @see {@link https://infra.spec.whatwg.org/#scalar-value-string}
+ * @see {@link https://infra.spec.whatwg.org/#javascript-string-convert}
  */
 export const convertStringToScalarValue = (s: string): string => {
 	let scalarValueString = ''
@@ -104,7 +104,7 @@ export const convertStringToScalarValue = (s: string): string => {
  * A string without any codepoints equal to either `U+000A`
  * or `U+000D`.
  *
- * @see https://infra.spec.whatwg.org/#strip-newlines
+ * @see {@link https://infra.spec.whatwg.org/#strip-newlines}
  */
 export const stripNewlines = (s: string): string => {
 	let stripped = ''
@@ -122,7 +122,7 @@ export const stripNewlines = (s: string): string => {
  * with a single `U+000A`, and any remaining `U+000D` codepoints
  * with a single `U+000A`.
  *
- * @see https://infra.spec.whatwg.org/#normalize-newlines
+ * @see {@link https://infra.spec.whatwg.org/#normalize-newlines}
  */
 export const normalizeNewlines = (s: string): string => {
 	let normalized = ''
@@ -150,17 +150,17 @@ export const normalizeNewlines = (s: string): string => {
  *    and characters that fall within the General Unicode `Space_Separator`
  *    category (USP).
  *
- * @see https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace
- * @see https://tc39.es/ecma262/multipage/text-processing.html#sec-string.prototype.trim
+ * @see {@link https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace}
+ * @see {@link https://tc39.es/ecma262/multipage/text-processing.html#sec-string.prototype.trim}
  */
 export const stripAsciiWsp = (s: string): string => {
 	let leadingIndex = 0
-	while (isAsciiWhitespace(s[leadingIndex] as string)) {
+	while (isAsciiWsp(s[leadingIndex] as string)) {
 		leadingIndex++
 	}
 
 	let trailingIndex = s.length
-	while (isAsciiWhitespace(s[trailingIndex - 1] as string)) {
+	while (isAsciiWsp(s[trailingIndex - 1] as string)) {
 		trailingIndex--
 	}
 
@@ -172,7 +172,7 @@ export const stripAsciiWsp = (s: string): string => {
  * into a single U+0020 codepoint, as well as remove whitespace from
  * both the start and end.
  *
- * @see https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace
+ * @see {@link https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace}
  */
 export const stripCollapseAsciiWsp = (s: string): string => {
 	let result = ''
@@ -180,7 +180,7 @@ export const stripCollapseAsciiWsp = (s: string): string => {
 
 	for (let i = 0; i < s.length; i++) {
 		const codepoint = s[i] as string
-		if (isAsciiWhitespace(codepoint)) {
+		if (isAsciiWsp(codepoint)) {
 			if (!lastSeenWhitespace) {
 				lastSeenWhitespace = true
 				result += '\u{0020}'
