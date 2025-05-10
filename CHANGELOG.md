@@ -11,6 +11,19 @@
   + export const namespaceXml = 'http://www.w3.org/XML/1998/namespace'
   + export const namespaceXmlNs = 'http://www.w3.org/2000/xmlns/'
   ```
+- A new module under `./num`, which exports functions for (loosely) checking the integer type of a JS number
+  ```diff
+  + export const isUint8   = (n: number) => boolean { .. }
+  + export const isUint16  = (n: number) => boolean { .. }
+  + export const isUint32  = (n: number) => boolean { .. }
+  + export const isUint64  = (n: number | bigint) => boolean { .. }
+  + export const isUint128 = (n: number | bigint) => boolean { .. }
+  + export const isInt8    = (n: number) => boolean { .. }
+  + export const isInt16   = (n: number) => boolean { .. }
+  + export const isInt32   = (n: number) => boolean { .. }
+  + export const isInt64   = (n: number | bigint) => boolean { .. }
+  + export const isInt128  = (n: number | bigint) => boolean { .. }
+  ```
 
 ### Documentation
 - Improve JSR.io's rendering of `@see` annotations which references external links
