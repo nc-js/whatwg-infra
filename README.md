@@ -5,6 +5,7 @@
 [![CI status](https://img.shields.io/github/actions/workflow/status/nc-js/whatwg-infra/.github%2Fworkflows%2Fdeno-ci.yml?style=flat-square)](https://github.com/nc-js/whatwg-infra/actions/workflows/deno-ci.yml)
 
 A small TypeScript package implementing various algorithms from the [**WHATWG Infra Standard**](https://infra.spec.whatwg.org/). This currently includes:
+ - [§ 4.3 Numbers](https://infra.spec.whatwg.org/#numbers)
  - [§ 4.5 Code points](https://infra.spec.whatwg.org/#code-points)
  - [§ 4.6 Strings](https://infra.spec.whatwg.org/#strings)
  - [§ 8 Namespaces](https://infra.spec.whatwg.org/#namespaces)
