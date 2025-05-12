@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 (Unreleased)
+## 1.1.0 (2025-05-12)
 ### Features
 - A new module under `./constants`, which exports constants of XML namespaces
   ```diff
